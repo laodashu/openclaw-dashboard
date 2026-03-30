@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>🌅 OpenClaw 仪表板</title>
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+            background: linear-gradient(135deg, #1a3c34 0%, #2d5a4a 100%);
+
+            color: #fff;
+
+            padding: 20px;
+
+            min-height: 100vh;
+
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+
+            text-align: center;
+
+            padding: 20px 0;
+
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+
+            margin-bottom: 30px;
+
+        }
+
+        h1 { font-size: 2em; margin-bottom: 10px; }
+
+        .subtitle { color: rgba(255,255,255,0.7); font-size: 0.9em; }
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+
+        }
+
+        .card {
+
+            background: rgba(255,255,255,0.1);
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            backdrop-filter: blur(10px);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+        }
+
+        .card h2 {
+
+            font-size: 1.2em;
+
+            margin-bottom: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .status {
+
+            display: inline-block;
+
+            width: 10px;
+
+            height: 10px;
+
+            border-radius: 50%;
+
+            margin-right: 8px;
+
+        }
+
+        .status.running { background: #4ade80; box-shadow: 0 0 10px #4ade80; }
+
+        .status.paused { background: #fbbf24; }
+
+        .status.error { background: #f87171; }
+
+        .metric {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+
+        }
+
+        .metric:last-child { border-bottom: none; }
+
+        .metric-label { color: rgba(255,255,255,0.7); }
+
+        .metric-value { font-weight: bold; }
+
+        .cron-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 12px;
+
+            background: rgba(255,255,255,0.05);
+
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .cron-name { font-weight: 500; }
+
+        .cron-schedule { color: rgba(255,255,255,0.6); font-size: 0.85em; }
+
+        .tag {
+
+            display: inline-block;
+
+            padding: 4px 8px;
+
+            border-radius: 4px;
+
+            font-size: 0.75em;
+
+            font-weight: bold;
+
+        }
+
+        .tag-success { background: rgba(74, 222, 128, 0.2); color: #4ade80; }
+
+        .tag-warning { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+
+        .tag-info { background: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 8px;
+
+            background: rgba(255,255,255,0.1);
+
+            border-radius: 4px;
+
+            overflow: hidden;
+
+            margin-top: 10px;
+
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+
+            border-radius: 4px;
+
+            transition: width 0.3s;
+
+        }
+
+        .refresh-btn {
+
+            background: rgba(255,255,255,0.1);
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            color: #fff;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 0.9em;
+
+            transition: all 0.3s;
+
+        }
+
+        .refresh-btn:hover {
+
+            background: rgba(255,255,255,0.2);
+
+            transform: translateY(-2px);
+    <div class="container">
+
+        <header>
+
+            <h1>🌅 OpenClaw 仪表板</h1>
+
+            <p class="subtitle">自动进化代理系统 · 实时监控</p>
+
+            <button class="refresh-btn" onclick="location.reload()" style="margin-top: 15px;">
+
+                🔄 刷新数据
+
+            </button>
+
+        </header>
+
+
+
+        <div class="grid">
+
+            <!-- 系统状态 -->
+
+            <div class="card">
+
+                <h2><span class="status running"></span>系统状态</h2>
+
+                <div class="metric">
+
+                    <span class="metric-label">Gateway</span>
+
+                    <span class="metric-value">🟢 运行中</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">运行时间</span>
+
+                    <span class="metric-value">3 天 2 小时</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">内存使用</span>
+
+                    <span class="metric-value">1.2GB / 8GB</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">CPU 使用</span>
+
+                    <span class="metric-value">12%</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">磁盘使用</span>
+
+                    <span class="metric-value">45GB / 100GB</span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill" style="width: 45%;"></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Cron 任务 -->
+
+            <div class="card">
+
+                <h2>⏰ Cron 任务</h2>
+
+                <div class="cron-item">
+
+                    <div>
+
+                        <div class="cron-name">decision-verify</div>
+
+                        <div class="cron-schedule">每 2 小时</div>
+
+                    </div>
+
+                    <span class="tag tag-success">✅ 启用</span>
+
+                </div>
+
+                <div class="cron-item">
+
+                    <div>
+
+                        <div class="cron-name">Proactive 心跳检查</div>
+
+                        <div class="cron-schedule">每小时</div>
+
+                    </div>
+
+                    <span class="tag tag-success">✅ 启用</span>
+
+                </div>
+
+                <div class="cron-item">
+
+                    <div>
+
+                        <div class="cron-name">每日新闻晨报</div>
+
+                        <div class="cron-schedule">每天 7:00</div>
+
+                    </div>
+
+                    <span class="tag tag-success">✅ 启用</span>
+
+                </div>
+
+                <div class="cron-item">
+
+                    <div>
+
+                        <div class="cron-name">晨光日记</div>
+
+                        <div class="cron-schedule">每天 22:00</div>
+
+                    </div>
+
+                    <span class="tag tag-success">✅ 启用</span>
+
+                </div>
+
+                <div class="cron-item">
+
+                    <div>
+
+                        <div class="cron-name">国际新闻抓取</div>
+
+                        <div class="cron-schedule">每天 6:00</div>
+
+                    </div>
+
+                    <span class="tag tag-warning">⚠️ 超时</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WAL 协议状态 -->
+
+            <div class="card">
+
+                <h2>📝 WAL 协议状态</h2>
+
+                <div class="metric">
+
+                    <span class="metric-label">SESSION-STATE.md</span>
+
+                    <span class="metric-value">🟢 活跃</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">最后更新</span>
+
+                    <span class="metric-value">2 分钟前</span>
+
+                </div>
+
+                <div class="metric">
+
+                    <span class="metric-label">活跃决策</span>
+
+                    <span class="metric-value">3 个</span>
+
+                </div>
+
+                <div class="metric">
+    <script>
+
+        // 自动刷新（30 秒）
+
+        setTimeout(() => location.reload(), 30000);
+
+        
+
+        // 倒计时显示
+
+        let seconds = 30;
+
+        setInterval(() => {
+
+            seconds--;
+
+            if (seconds <= 0) seconds = 30;
+
+        }, 1000);
+
+    </script>
+
+</body>
+
+</html>
+
